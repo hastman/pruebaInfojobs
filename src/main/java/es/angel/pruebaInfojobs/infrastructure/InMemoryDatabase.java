@@ -49,7 +49,7 @@ public class InMemoryDatabase {
 
     public void write(String table, KeyModel objectToWrite) {
         if (!this.storage.containsKey(table)) {
-            this.storage.put(table, null);
+            this.storage.put(table, new ArrayList<>());
         }
         this.storage.getOrDefault(table, new ArrayList<>()).add(objectToWrite);
     }

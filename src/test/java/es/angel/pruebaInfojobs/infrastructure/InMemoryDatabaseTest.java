@@ -43,6 +43,18 @@ public class InMemoryDatabaseTest {
     }
 
     @Test
+    public void when_write_new_data_and_table_does_not_exists_should_be_created_and_write_object() {
+        final InMemoryDatabase inMemoryDatabase = InMemoryDatabase.getInstance();
+        inMemoryDatabase.write("newTable", new KeyModel() {
+            @Override
+            public String getKey() {
+                return "asdas";
+            }
+        });
+        assertThat(inMemoryDatabase.readOne("newTable", "asdas").isPresent(), is(true));
+    }
+
+    @Test
     public void when_read_first_time_the_database_instance_should_contains_only_the_inital_data() {
         final InMemoryDatabase inMemoryDatabase = InMemoryDatabase.getInstance();
         assertThat(inMemoryDatabase.read("users"), is(InMemoryDatabase.USER_INITIAL_DATA));
@@ -63,9 +75,9 @@ public class InMemoryDatabaseTest {
     }
 
     @Test
-    public void when_erase_data_should_not_exists(){
+    public void when_erase_data_should_not_exists() {
         final InMemoryDatabase inMemoryDatabase = InMemoryDatabase.getInstance();
-        inMemoryDatabase.erase("users","user2");
+        inMemoryDatabase.erase("users", "user2");
         Optional<KeyModel> userDeleted = inMemoryDatabase.readOne("users", "user2");
         assertThat(userDeleted.isPresent(), is(false));
     }

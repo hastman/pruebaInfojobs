@@ -18,8 +18,6 @@ public class RoutesHandle implements HttpHandler {
 
         final RoutesDefinition routesDefinition = RoutesDefinition.obtainDefinition(cleanedPath);
 
-      
-
 
 
 
