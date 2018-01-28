@@ -1,12 +1,20 @@
 package es.angel.pruebaInfojobs.exception;
 
-public class ForbiddenException extends RuntimeException {
+import es.angel.pruebaInfojobs.model.Response;
+
+public class ForbiddenException extends HttpStatusCodeException {
 
     public ForbiddenException() {
-        super("Access denied");
+
     }
 
-    public ForbiddenException(String message) {
-        super("Error code 403: Access denied");
+    @Override
+    public String getMessage() {
+        return "Error code 403: Access denied";
+    }
+
+    @Override
+    public Response errorResponse() {
+        return new Response.Builder().withStatusCode(403).withBody("Access deniend").build();
     }
 }

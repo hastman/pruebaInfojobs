@@ -1,13 +1,11 @@
 package es.angel.pruebaInfojobs.exception;
 
-public class InternalError extends RuntimeException {
+import es.angel.pruebaInfojobs.model.Response;
 
-    public InternalError() {
-        super("Internal Error");
-    }
+public class InternalError extends HttpStatusCodeException {
 
     @Override
-    public String getMessage() {
-        return "Error Code:500, Internal Error";
+    public Response errorResponse() {
+        return new Response.Builder().withStatusCode(500).withBody("Internal Error").build();
     }
 }

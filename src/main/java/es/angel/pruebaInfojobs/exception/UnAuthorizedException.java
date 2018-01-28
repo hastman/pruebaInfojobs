@@ -1,12 +1,16 @@
 package es.angel.pruebaInfojobs.exception;
 
-public class UnAuthorizedException extends RuntimeException {
+import es.angel.pruebaInfojobs.model.Response;
 
-    public UnAuthorizedException() {
-        super("Unauthorized access");
+public class UnAuthorizedException extends HttpStatusCodeException {
+
+    @Override
+    public String getMessage() {
+        return "Error code 401: Unauthorized access";
     }
 
-    public UnAuthorizedException(String message) {
-        super("Error code 501: Unauthorized access");
+    @Override
+    public Response errorResponse() {
+        return new Response.Builder().withStatusCode(401).withBody("Unauthorized access").build();
     }
 }
