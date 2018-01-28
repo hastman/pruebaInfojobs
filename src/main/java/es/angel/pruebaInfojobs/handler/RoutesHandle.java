@@ -20,11 +20,10 @@ public class RoutesHandle implements HttpHandler {
         final String cleanedPath = path.replaceAll("/", "");
         final String method = httpExchange.getRequestMethod().toUpperCase();
         final String contentType = httpExchange.getResponseHeaders().getFirst("Content-Type");
-
-        final RoutesDefinition routesDefinition = RoutesDefinition.obtainDefinition(cleanedPath);
         final Map<String, String> parameters = new HashMap<>();
 
         try {
+            final RoutesDefinition routesDefinition = RoutesDefinition.obtainDefinition(cleanedPath);
             final HttpMethodStrategy methodStrategy = new HttpMethodStrategy(routesDefinition.controller());
             final Response response = methodStrategy.responseForMethod(method);
             sendResponse(httpExchange, response);
@@ -49,7 +48,7 @@ public class RoutesHandle implements HttpHandler {
     private void sendResponse(HttpExchange httpExchange, Response response) throws IOException {
         final OutputStream responseStream = httpExchange.getResponseBody();
         final byte[] bodyBytes = response.getBodyContent().getBytes();
-        httpExchange.sendResponseHeaders(response.getStatusCode(), bodyBytes.length);
+        httpExchange.sendResponseHeaders(response.getStatusCode(), 0);
         httpExchange.getResponseHeaders().set("Content-Type", response.getContentType());
         responseStream.write(bodyBytes);
         responseStream.flush();
