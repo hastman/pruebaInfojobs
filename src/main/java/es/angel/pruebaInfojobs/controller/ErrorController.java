@@ -8,14 +8,7 @@ import es.angel.pruebaInfojobs.model.Response;
 
 import java.util.Map;
 
-public class ErrorController implements HttpController {
-
-    ViewResolver viewResolver;
-
-    @Override
-    public Response doPost(final Map<String, String> parameters) {
-        throw new MethodNotSupportedException();
-    }
+public class ErrorController extends HttpController {
 
     @Override
     public Response doGet(final Map<String, String> parameters) {
@@ -35,13 +28,5 @@ public class ErrorController implements HttpController {
                 .withContentType(contentType).build();
     }
 
-    @Override
-    public Response doDelelete(final Map<String, String> parameters) {
-        throw new MethodNotSupportedException();
-    }
 
-    @Override
-    public Response doPut(final Map<String, String> parameters) {
-        throw new MethodNotSupportedException();
-    }
 }

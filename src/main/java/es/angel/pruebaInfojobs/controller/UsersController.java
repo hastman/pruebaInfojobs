@@ -4,7 +4,7 @@ import es.angel.pruebaInfojobs.model.Response;
 
 import java.util.Map;
 
-public class UsersController implements HttpController {
+public class UsersController extends HttpController {
     @Override
     public Response doPost(final Map<String, String> parameters) {
         return null;

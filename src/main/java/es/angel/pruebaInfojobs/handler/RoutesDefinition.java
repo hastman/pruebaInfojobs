@@ -17,16 +17,6 @@ public enum RoutesDefinition {
         public HttpController controller() throws IllegalAccessException, InstantiationException {
             return this.controller.newInstance();
         }
-    }, MAIN("main", MainController.class) {
-        @Override
-        public boolean isSecure() {
-            return true;
-        }
-
-        @Override
-        public HttpController controller() throws IllegalAccessException, InstantiationException {
-            return this.controller.newInstance();
-        }
     }, PAGE_1("page1", Page1Controller.class) {
         @Override
         public boolean isSecure() {
