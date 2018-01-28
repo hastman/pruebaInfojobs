@@ -58,7 +58,7 @@ public enum RoutesDefinition {
         public HttpController controller() throws IllegalAccessException, InstantiationException {
             return this.controller.newInstance();
         }
-    }, LOGOUT("logout", HttpController.class) {
+    }, LOGOUT("logout", LogoutController.class) {
         @Override
         public boolean isSecure() {
             return false;
@@ -68,7 +68,7 @@ public enum RoutesDefinition {
         public HttpController controller() throws IllegalAccessException, InstantiationException {
             return this.controller.newInstance();
         }
-    }, ERROR("error", HttpController.class) {
+    }, ERROR("error", ErrorController.class) {
         @Override
         public boolean isSecure() {
             return false;
