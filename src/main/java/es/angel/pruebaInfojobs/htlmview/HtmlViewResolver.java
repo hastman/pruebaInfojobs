@@ -11,11 +11,14 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
 
-public class HtmlViewResolver {
+public class HtmlViewResolver implements ViewResolver {
 
-    public String resolveView(String template, String message) {
+
+    public String resolveView(String template, String... message) {
         try (Stream<String> lines = Files.lines(Paths.get(ClassLoader.getSystemResource(template).toURI()))) {
-            return lines.map(line -> String.format(line, Optional.ofNullable(message).orElseGet(() -> "")))
+            return lines.map(line -> String.format(line, Optional.ofNullable(message)
+                    .map(m -> m[0])
+                    .orElse("")))
                     .collect(joining("\n"));
         } catch (IOException | URISyntaxException | NullPointerException e) {
             System.err.println("Error al resolver la vista");

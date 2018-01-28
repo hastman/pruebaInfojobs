@@ -1,60 +1,111 @@
 package es.angel.pruebaInfojobs.handler;
 
+import es.angel.pruebaInfojobs.controller.*;
 import es.angel.pruebaInfojobs.exception.NotFoundException;
 
 import java.util.Arrays;
 
 public enum RoutesDefinition {
 
-    LOGIN("") {
+    LOGIN("", LoginController.class) {
         @Override
         public boolean isSecure() {
             return false;
         }
-    }, PAGE_1("page1") {
+
+        @Override
+        public HttpController controller() throws IllegalAccessException, InstantiationException {
+            return this.controller.newInstance();
+        }
+    }, MAIN("main", MainController.class) {
         @Override
         public boolean isSecure() {
             return true;
         }
-    }, PAGE_2("page2") {
+
+        @Override
+        public HttpController controller() throws IllegalAccessException, InstantiationException {
+            return this.controller.newInstance();
+        }
+    }, PAGE_1("page1", Page1Controller.class) {
         @Override
         public boolean isSecure() {
             return true;
         }
-    }, PAGE_3("page3") {
+
+        @Override
+        public HttpController controller() throws IllegalAccessException, InstantiationException {
+            return this.controller.newInstance();
+        }
+    }, PAGE_2("page2", Page2Controller.class) {
         @Override
         public boolean isSecure() {
             return true;
         }
-    }, USERS("users") {
+
+        @Override
+        public HttpController controller() throws IllegalAccessException, InstantiationException {
+            return this.controller.newInstance();
+        }
+
+    }, PAGE_3("page3", Page3Controller.class) {
         @Override
         public boolean isSecure() {
             return true;
         }
-    }, LOGOUT("logout") {
+
+        @Override
+        public HttpController controller() throws IllegalAccessException, InstantiationException {
+            return this.controller.newInstance();
+        }
+    }, USERS("users", UsersController.class) {
+        @Override
+        public boolean isSecure() {
+            return true;
+        }
+
+        @Override
+        public HttpController controller() throws IllegalAccessException, InstantiationException {
+            return this.controller.newInstance();
+        }
+    }, LOGOUT("logout", HttpController.class) {
         @Override
         public boolean isSecure() {
             return false;
         }
-    }, ERROR("error") {
+
+        @Override
+        public HttpController controller() throws IllegalAccessException, InstantiationException {
+            return this.controller.newInstance();
+        }
+    }, ERROR("error", HttpController.class) {
         @Override
         public boolean isSecure() {
             return false;
+        }
+
+        @Override
+        public HttpController controller() throws IllegalAccessException, InstantiationException {
+            return this.controller.newInstance();
         }
     };
 
 
     public abstract boolean isSecure();
 
+    public abstract HttpController controller() throws IllegalAccessException, InstantiationException;
+
     private final String path;
 
-    RoutesDefinition(String path) {
+    final Class<? extends HttpController> controller;
+
+    RoutesDefinition(String path, Class<? extends HttpController> controller) {
         this.path = path;
+        this.controller = controller;
     }
 
     public static RoutesDefinition obtainDefinition(final String pathDestination) {
-        return Arrays.asList(RoutesDefinition.values())
-                .stream()
+        return Arrays.stream(RoutesDefinition.values())
                 .filter(rd -> rd.path.equals(pathDestination))
                 .findFirst()
                 .orElseThrow(NotFoundException::new);

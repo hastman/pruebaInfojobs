@@ -16,7 +16,7 @@ import static java.util.Collections.singletonList;
 
 /**
  * In memory storage with initial users
- * Singleton pattern, with this solution is possible to share the database across the entire application
+ * Singleton pattern, with this solution is possible share the database across the entire application
  */
 public class InMemoryDatabase {
 
@@ -29,11 +29,11 @@ public class InMemoryDatabase {
             new Users(singletonList("PAGE_2"), "user2", "pwd1"),
             new Users(singletonList("PAGE_3"), "user3", "pwd1")));
 
-    static final List<KeyModel> ACCESS_INITIAL_DATA = new ArrayList<>(asList(
-            new Access(singletonList(new Authorization(singletonList("*"), singletonList("*"))), "ADMIN"),
-            new Access(asList(new Authorization(singletonList("page1"), singletonList("get")), new Authorization(singletonList("users"), singletonList("get"))), "PAGE_1"),
-            new Access(asList(new Authorization(singletonList("page2"), singletonList("get")), new Authorization(singletonList("users"), singletonList("get"))), "PAGE_2"),
-            new Access(asList(new Authorization(singletonList("page3"), singletonList("get")), new Authorization(singletonList("users"), singletonList("get"))), "PAGE_3")));
+    private static final List<KeyModel> ACCESS_INITIAL_DATA = new ArrayList<>(asList(
+            new Access(singletonList(new Authorization("*", singletonList("*"))), "ADMIN"),
+            new Access(asList(new Authorization("main", singletonList("get")), new Authorization("page1", singletonList("get")), new Authorization("users", singletonList("get"))), "PAGE_1"),
+            new Access(asList(new Authorization("main", singletonList("get")), new Authorization("page2", singletonList("get")), new Authorization("users", singletonList("get"))), "PAGE_2"),
+            new Access(asList(new Authorization("main", singletonList("get")), new Authorization("page3", singletonList("get")), new Authorization("users", singletonList("get"))), "PAGE_3")));
 
     private static final InMemoryDatabase INSTANCE = new InMemoryDatabase();
 
