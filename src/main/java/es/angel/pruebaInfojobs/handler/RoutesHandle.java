@@ -27,8 +27,7 @@ public class RoutesHandle implements HttpHandler {
             final String method = httpExchange.getRequestMethod().toUpperCase();
             final Map<String, String> parameters = ParamsHelper.extractParams(httpExchange);
             final RoutesDefinition routesDefinition = RoutesDefinition.obtainDefinition(path);
-            final HttpMethodStrategy methodStrategy = new HttpMethodStrategy(routesDefinition.controller(), parameters);
-            final Response response = methodStrategy.responseForMethod(method);
+            final Response response = HttpMethodStrategy.responseForMetod(method, routesDefinition.controller(), parameters);
             sendResponse(httpExchange, response);
         } catch (HttpStatusCodeException e) {
             System.err.println("Error when perform action " + e.getMessage());
@@ -38,7 +37,8 @@ public class RoutesHandle implements HttpHandler {
                     .withContentType(httpExchange.getResponseHeaders().getFirst("Content-Type"))
                     .withStatusCode(errorResponse.getStatusCode())
                     .build());
-        } catch (IllegalAccessException | InstantiationException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Error at instantiate controller " + e);
             final Map<String, String> parameters = new HashMap<>();
             parameters.put("ERROR", e.getMessage());

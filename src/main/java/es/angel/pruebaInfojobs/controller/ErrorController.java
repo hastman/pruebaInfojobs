@@ -13,7 +13,7 @@ public class ErrorController extends HttpController {
         final String contentType = parameters.getOrDefault("Content-Type", "text/html");
         final String error = parameters.getOrDefault("ERROR", "Error code 500: Internal error");
         String[] errorMessages = new String[]{error};
-        String template = "html/error.html";
+        String template = "templates/error.html";
         viewResolver = new HtmlViewResolver();
         if (!contentType.equals("text/html")) {
             template = contentType;

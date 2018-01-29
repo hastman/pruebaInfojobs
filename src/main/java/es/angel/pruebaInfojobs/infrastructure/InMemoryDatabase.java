@@ -46,11 +46,14 @@ public class InMemoryDatabase {
         this.storage.put("access", ACCESS_INITIAL_DATA);
     }
 
-
-    public void write(String table, KeyModel objectToWrite) {
+    public void createTable(String table) {
         if (!this.storage.containsKey(table)) {
             this.storage.put(table, new ArrayList<>());
         }
+    }
+
+    public void write(String table, KeyModel objectToWrite) {
+        createTable(table);
         this.storage.getOrDefault(table, new ArrayList<>()).add(objectToWrite);
     }
 
@@ -61,7 +64,7 @@ public class InMemoryDatabase {
 
     public Optional<KeyModel> readOne(final String table, final String searchIndex) {
         return this.storage.getOrDefault(table, new ArrayList<>()).stream()
-                .filter(contetn -> contetn.getKey().equals(searchIndex))
+                .filter(content -> searchIndex.equals(content.getKey()))
                 .findFirst();
     }
 

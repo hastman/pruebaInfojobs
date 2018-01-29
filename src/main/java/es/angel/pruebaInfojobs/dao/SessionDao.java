@@ -9,11 +9,13 @@ import java.util.stream.Collectors;
 
 public class SessionDao implements BaseDao<Session, String> {
 
-    public static final String SESSIONS_TABLE = "sessions";
+    private static final String SESSIONS_TABLE = "sessions";
     private InMemoryDatabase inMemoryDatabase;
 
     public SessionDao() {
         inMemoryDatabase = InMemoryDatabase.getInstance();
+        inMemoryDatabase.createTable(SESSIONS_TABLE);
+
     }
 
     @Override

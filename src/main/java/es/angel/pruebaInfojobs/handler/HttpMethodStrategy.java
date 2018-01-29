@@ -5,56 +5,59 @@ import es.angel.pruebaInfojobs.exception.HttpStatusCodeException;
 import es.angel.pruebaInfojobs.exception.MethodNotSupportedException;
 import es.angel.pruebaInfojobs.model.Response;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
-public class HttpMethodStrategy {
+public enum HttpMethodStrategy {
 
-    private Map<String, Response> methodAndResponseMap = new HashMap<>();
 
-    HttpMethodStrategy(HttpController httpController, Map<String, String> parms) {
-        this.methodAndResponseMap.put("GET", this.get(httpController, parms));
-        this.methodAndResponseMap.put("POST", this.post(httpController, parms));
-        this.methodAndResponseMap.put("PUT", this.put(httpController, parms));
-        this.methodAndResponseMap.put("DELETE", this.delete(httpController, parms));
-    }
-
-    public Response responseForMethod(String method) {
-        if (!methodAndResponseMap.containsKey(method)) {
-            throw new MethodNotSupportedException();
+    GET {
+        @Override
+        public Response response(HttpController httpController, Map<String, String> params) {
+            try {
+                return httpController.doGet(params);
+            } catch (HttpStatusCodeException ex) {
+                return ex.errorResponse();
+            }
         }
-        return methodAndResponseMap.get(method);
+    },
+    POST {
+        @Override
+        public Response response(HttpController httpController, Map<String, String> params) {
+            try {
+                return httpController.doPost(params);
+            } catch (HttpStatusCodeException ex) {
+                return ex.errorResponse();
+            }
+        }
+    }, PUT {
+        @Override
+        public Response response(HttpController httpController, Map<String, String> params) {
+            try {
+                return httpController.doPut(params);
+            } catch (HttpStatusCodeException ex) {
+                return ex.errorResponse();
+            }
+        }
+    }, DELETE {
+        @Override
+        public Response response(HttpController httpController, Map<String, String> params) {
+            try {
+                return httpController.doDelelete(params);
+            } catch (HttpStatusCodeException ex) {
+                return ex.errorResponse();
+            }
+        }
+    };
+
+    public static Response responseForMetod(String method, HttpController httpController, Map<String, String> params) {
+        return Stream.of(HttpMethodStrategy.values())
+                .filter(httpMethod -> httpMethod.name().equals(method))
+                .findFirst().orElseThrow(MethodNotSupportedException::new)
+                .response(httpController, params);
     }
 
-    private Response post(HttpController httpController, Map<String, String> parms) {
-        try {
-            return httpController.doPost(parms);
-        } catch (HttpStatusCodeException ex) {
-            return ex.errorResponse();
-        }
-    }
+    public abstract Response response(HttpController httpController, Map<String, String> params);
 
-    private Response put(HttpController httpController, Map<String, String> parms) {
-        try {
-            return httpController.doPut(parms);
-        } catch (HttpStatusCodeException ex) {
-            return ex.errorResponse();
-        }
-    }
 
-    private Response delete(HttpController httpController, Map<String, String> parms) {
-        try {
-            return httpController.doDelelete(parms);
-        } catch (HttpStatusCodeException ex) {
-            return ex.errorResponse();
-        }
-    }
-
-    private Response get(HttpController httpController, Map<String, String> parms) {
-        try {
-            return httpController.doGet(parms);
-        } catch (HttpStatusCodeException ex) {
-            return ex.errorResponse();
-        }
-    }
 }
