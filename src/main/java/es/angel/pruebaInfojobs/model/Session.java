@@ -16,11 +16,20 @@ public class Session implements KeyModel {
     public Session(String token, String userName) {
         this.token = token;
         this.userName = userName;
+        this.createdDate = LocalDateTime.now();
+        this.sessionDao = new SessionDao();
+    }
+
+    public Session(String token, String userName, LocalDateTime createdDate) {
+        this.token = token;
+        this.userName = userName;
+        this.createdDate = createdDate;
         this.sessionDao = new SessionDao();
     }
 
     public Session(String token) {
         this.token = token;
+        this.createdDate = LocalDateTime.now();
         this.sessionDao = new SessionDao();
     }
 
@@ -41,7 +50,6 @@ public class Session implements KeyModel {
         if (hasSession().isPresent()) {
             sessionDao.delete(token);
         }
-        this.createdDate = LocalDateTime.now();
         sessionDao.save(this);
     }
 

@@ -16,6 +16,8 @@ public class RestAuthenticator extends BasicAuthenticator {
 
     private Users userInDB;
 
+    private static final String SEC_EXCEPTION = "SEC_EXCEPTION";
+
     RestAuthenticator(String s) {
         super(s);
     }
@@ -24,11 +26,17 @@ public class RestAuthenticator extends BasicAuthenticator {
     public Result authenticate(HttpExchange httpExchange) {
         Result authenticate = super.authenticate(httpExchange);
         if (!(authenticate instanceof Authenticator.Success)) {
-            httpExchange.setAttribute("SEC_EXCEPTION", new UnAuthorizedException());
+            httpExchange.setAttribute(SEC_EXCEPTION, new UnAuthorizedException());
             return authenticate;
         }
+        Result result = canAccess(httpExchange);
+        if (!(result instanceof Authenticator.Success)) {
+            return result;
+        }
         httpExchange.setAttribute("USER_IN_SESSION", userInDB.getUserName());
-        return canAccess(httpExchange);
+        return result;
+
+
     }
 
     @Override
@@ -49,7 +57,7 @@ public class RestAuthenticator extends BasicAuthenticator {
             return access.findByRole();
         }).anyMatch(access -> access.canAccess(httpExchange.getRequestMethod(), path));
         if (!canAccess) {
-            httpExchange.setAttribute("SEC_EXCEPTION", new ForbiddenException());
+            httpExchange.setAttribute(SEC_EXCEPTION, new ForbiddenException());
             return new Failure(403);
         }
         return new Success(new HttpPrincipal(userInDB.getUserName(), "users"));

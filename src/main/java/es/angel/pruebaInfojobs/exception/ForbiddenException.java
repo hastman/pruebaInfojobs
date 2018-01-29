@@ -4,10 +4,6 @@ import es.angel.pruebaInfojobs.model.Response;
 
 public class ForbiddenException extends HttpStatusCodeException {
 
-    public ForbiddenException() {
-
-    }
-
     @Override
     public String getMessage() {
         return "Error code 403: Access denied";
