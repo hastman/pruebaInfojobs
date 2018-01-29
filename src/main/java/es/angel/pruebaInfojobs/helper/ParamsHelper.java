@@ -40,9 +40,9 @@ public class ParamsHelper {
     }
 
     private static Map<String, String> extractJsonBody(String body) {
-        if (body.matches("[{}\\[\\]]")) {
-            return Stream.of(body.replaceAll("[{}\\[\\]]", "").split(","))
-                    .collect(Collectors.toMap(s -> s.split(":")[0], s -> s.split(":")[1]));
+        if (body.startsWith("{") && body.endsWith("}")) {
+            return Stream.of(body.replaceAll("[{}\\[\\]\"]", "").split(","))
+                    .collect(Collectors.toMap(s -> s.split(":")[0].trim(), s -> s.split(":")[1].trim()));
         }
         return new HashMap<>();
     }

@@ -1,0 +1,201 @@
+{
+	"info": {
+		"name": "usersResource",
+		"_postman_id": "61e3c5e7-c977-b835-a578-b9e389520be5",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "DeleteUser",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\":\"usertest\",\n\t\"password\":\"1234\",\n\t\"roles\":[\"page1\"]\n}"
+				},
+				"url": {
+					"raw": "localhost:8000/users/usertest",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"usertest"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ModifyUser",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\":\"usertest\",\n\t\"password\":\"1234\",\n\t\"roles\":[\"page1\"]\n}"
+				},
+				"url": {
+					"raw": "localhost:8000/users/usertest",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"usertest"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "CreateUser",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\":\"usertest\",\n\t\"password\":\"1234\",\n\t\"roles\":[\"admin\"]\n}"
+				},
+				"url": {
+					"raw": "localhost:8000/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetUser",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\":\"usertest\",\n\t\"password\":\"1234\",\n\t\"roles\":[\"page1\"]\n}"
+				},
+				"url": {
+					"raw": "localhost:8000/users/usertest",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"usertest"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
