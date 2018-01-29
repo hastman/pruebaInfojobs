@@ -18,7 +18,7 @@ public class ParamsHelper {
 
     public static Map<String, String> extractParams(HttpExchange httpExchange) {
         final String searchUuidPath = extractFromPath(httpExchange.getRequestURI().getPath());
-        final Map<String, String> responseHeaders = extractFromHeaders(httpExchange.getResponseHeaders());
+        final Map<String, String> responseHeaders = extractFromHeaders(httpExchange.getRequestHeaders());
         final Map<String, String> body = extractFromBody(new BufferedReader(new InputStreamReader(httpExchange.getRequestBody()))
                 .lines().collect(Collectors.joining("\n")));
         final Map<String, String> extracted = new HashMap<>();

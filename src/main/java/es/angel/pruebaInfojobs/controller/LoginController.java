@@ -7,6 +7,7 @@ import es.angel.pruebaInfojobs.model.Session;
 import es.angel.pruebaInfojobs.model.Users;
 
 import java.util.Map;
+import java.util.UUID;
 
 
 public class LoginController extends HttpController {
@@ -22,8 +23,9 @@ public class LoginController extends HttpController {
         if (!new Users.Builder().withUserName(userName).withPassword(password).build().isUser()) {
             throw new UnAuthorizedException();
         }
-        new Session(userName).saveSession();
-        return performResponseWithTemplateMessage("templates/main.html", null);
+        final String uuidSession = UUID.randomUUID().toString();
+        new Session(uuidSession, userName).saveSession();
+        return performResponseWithTemplateMessage("templates/main.html", new String[]{uuidSession});
     }
 
     @Override

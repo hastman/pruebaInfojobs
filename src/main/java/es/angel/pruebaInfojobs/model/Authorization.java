@@ -16,10 +16,10 @@ public class Authorization {
 
 
     public boolean isMethodAuthorized(String method) {
-        return this.methods.contains(method) || FULL_ACCESS.equals(method);
+        return this.methods.contains(method.toLowerCase()) || this.methods.contains(FULL_ACCESS);
     }
 
     public boolean isPathAuthorized(String path) {
-        return this.path.equals(path) || FULL_ACCESS.equals(path);
+        return this.path.equals(path) || this.path.equals(FULL_ACCESS);
     }
 }

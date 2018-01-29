@@ -20,23 +20,32 @@ public class SecurityFilter extends Filter {
     public void doFilter(HttpExchange httpExchange, Chain chain) throws IOException {
 
         final String path = Stream.of(httpExchange.getRequestURI().getPath().split("/"))
+                .filter(p -> p.length() > 0)
                 .findFirst()
                 .orElse("");
         final RoutesDefinition routesDefinition = RoutesDefinition.obtainDefinition(path);
         if (routesDefinition.isSecure()) {
-            final String userName = ParamsHelper.extractParams(httpExchange).get("userName");
-            final Optional<Session> session = new Session(userName).hasSession();
+            final String token = extractSessionToken(ParamsHelper.extractParams(httpExchange).get("Cookie"), httpExchange, chain);
+            final Optional<Session> session = new Session(token).hasSession();
             checkSession(httpExchange, chain, session);
-            validSession(httpExchange, chain, session);
-            canAccess(httpExchange, chain, path, userName);
+            validSession(httpExchange, chain, session.get());
+            canAccess(httpExchange, chain, path, session.get());
             chain.doFilter(httpExchange);
         }
         chain.doFilter(httpExchange);
     }
 
-    private void canAccess(HttpExchange httpExchange, Chain chain, String path, String userName) throws IOException {
+    private String extractSessionToken(String cookie, HttpExchange httpExchange, Chain chain) throws IOException {
+        if (!Optional.ofNullable(cookie).isPresent()) {
+            httpExchange.setAttribute("SEC_EXCEPTION", new UnAuthorizedException());
+            chain.doFilter(httpExchange);
+        }
+        return cookie.split("=")[1];
+    }
+
+    private void canAccess(HttpExchange httpExchange, Chain chain, String path, Session session) throws IOException {
         final Users users = new Users();
-        users.setUserName(userName);
+        users.setUserName(session.getUserName());
         final Users completeUserData = users.findByUserName();
         boolean canAccess = completeUserData.getRoles().stream().map(role -> {
             Access access = new Access();
@@ -49,9 +58,9 @@ public class SecurityFilter extends Filter {
         }
     }
 
-    private void validSession(HttpExchange httpExchange, Chain chain, Optional<Session> session) throws IOException {
-        if (!session.get().isValidSession()) {
-            httpExchange.setAttribute("SEC_EXCEPTION", new ForbiddenException());
+    private void validSession(HttpExchange httpExchange, Chain chain, Session session) throws IOException {
+        if (!session.isValidSession()) {
+            httpExchange.setAttribute("SEC_EXCEPTION", new UnAuthorizedException());
             chain.doFilter(httpExchange);
         }
     }
