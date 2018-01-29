@@ -39,6 +39,7 @@ public class RoutesHandle implements HttpHandler {
             httpExchange.setAttribute("SEC_EXCEPTION", null);
             sendResponse(httpExchange, new ErrorController().doGet(parameters));
         } catch (Exception e) {
+            e.printStackTrace(System.err);
             System.err.println("Error at instantiate controller " + e);
             final Map<String, String> parameters = new HashMap<>();
             parameters.put("ERROR", e.getMessage());

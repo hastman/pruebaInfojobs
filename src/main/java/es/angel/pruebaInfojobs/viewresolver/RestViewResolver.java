@@ -14,10 +14,9 @@ public class RestViewResolver implements ViewResolver {
     }
 
     private String jsonView(String... message) {
-        final StringBuffer jsonView = new StringBuffer().append("{");
+        final StringBuilder jsonView = new StringBuilder().append("{");
         int j = 0;
         for (int i = 0, messageLength = message.length; i < messageLength; i += 2) {
-            String s = message[i];
             jsonView.append("\"").append(message[j]).append("\"").append(":");
             final String value = message[++j];
             if (value.contains(",")) {
@@ -38,7 +37,7 @@ public class RestViewResolver implements ViewResolver {
     }
 
     private String xmlView(String... message) {
-        final StringBuffer xmlView = new StringBuffer();
+        final StringBuilder xmlView = new StringBuilder();
         int j = 0;
         for (int i = 0, messageLength = message.length; i < messageLength; i += 2) {
             final String label = message[j];
@@ -46,7 +45,7 @@ public class RestViewResolver implements ViewResolver {
             if (content.contains(",")) {
                 xmlView.append("<").append(label).append("s>");
                 xmlView.append(Stream.of(content.split(","))
-                        .map(c -> new StringBuffer().append("<").append(label).append(">")
+                        .map(c -> new StringBuilder().append("<").append(label).append(">")
                                 .append(c)
                                 .append("</").append(label).append(">").toString()).collect(joining("")));
                 xmlView.append("</").append(label).append("s>");
