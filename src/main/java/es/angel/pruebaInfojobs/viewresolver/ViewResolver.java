@@ -1,4 +1,4 @@
-package es.angel.pruebaInfojobs.htlmview;
+package es.angel.pruebaInfojobs.viewresolver;
 
 public interface ViewResolver {
 

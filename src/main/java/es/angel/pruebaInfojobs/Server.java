@@ -16,6 +16,7 @@ public class Server {
 
         final HttpContext context = server.createContext("/", new RoutesHandle());
         context.getFilters().add(new SecurityFilter());
+
         server.setExecutor(null);
         server.start();
 

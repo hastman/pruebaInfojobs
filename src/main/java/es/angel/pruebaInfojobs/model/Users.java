@@ -2,10 +2,13 @@ package es.angel.pruebaInfojobs.model;
 
 import es.angel.pruebaInfojobs.dao.BaseDao;
 import es.angel.pruebaInfojobs.dao.UserDao;
+import es.angel.pruebaInfojobs.exception.BadRequestException;
 import es.angel.pruebaInfojobs.helper.CryptoHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class Users implements KeyModel {
 
@@ -67,7 +70,20 @@ public class Users implements KeyModel {
         return userDao.readAll();
     }
 
-    public Boolean isUser(){
+    public static Users fromJson(Map<String, String> jsonUser) {
+
+        if (!jsonUser.containsKey("userName") || !jsonUser.containsKey("password") || !jsonUser.containsKey("roles")) {
+            throw new BadRequestException();
+        }
+        return new Users.Builder()
+                .withPassword(jsonUser.get("password"))
+                .withUserName(jsonUser.get("userName"))
+                .withRoles(Arrays.asList(jsonUser.get("roles")
+                        .split(","))).build();
+
+    }
+
+    public Boolean isUser() {
         final Users userInBD = userDao.findOne(userName).orElseGet(Users::new);
         return userInBD.getPassword().equals(this.getPassword());
     }

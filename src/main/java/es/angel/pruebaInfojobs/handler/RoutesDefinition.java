@@ -14,6 +14,11 @@ public enum RoutesDefinition {
         }
 
         @Override
+        public boolean isRest() {
+            return false;
+        }
+
+        @Override
         public HttpController controller() throws IllegalAccessException, InstantiationException {
             return this.controller.newInstance();
         }
@@ -24,6 +29,11 @@ public enum RoutesDefinition {
         }
 
         @Override
+        public boolean isRest() {
+            return false;
+        }
+
+        @Override
         public HttpController controller() throws IllegalAccessException, InstantiationException {
             return this.controller.newInstance();
         }
@@ -31,6 +41,11 @@ public enum RoutesDefinition {
         @Override
         public boolean isSecure() {
             return true;
+        }
+
+        @Override
+        public boolean isRest() {
+            return false;
         }
 
         @Override
@@ -45,12 +60,22 @@ public enum RoutesDefinition {
         }
 
         @Override
+        public boolean isRest() {
+            return false;
+        }
+
+        @Override
         public HttpController controller() throws IllegalAccessException, InstantiationException {
             return this.controller.newInstance();
         }
     }, USERS("users", UsersController.class) {
         @Override
         public boolean isSecure() {
+            return true;
+        }
+
+        @Override
+        public boolean isRest() {
             return true;
         }
 
@@ -65,12 +90,22 @@ public enum RoutesDefinition {
         }
 
         @Override
+        public boolean isRest() {
+            return false;
+        }
+
+        @Override
         public HttpController controller() throws IllegalAccessException, InstantiationException {
             return this.controller.newInstance();
         }
     }, ERROR("error", ErrorController.class) {
         @Override
         public boolean isSecure() {
+            return false;
+        }
+
+        @Override
+        public boolean isRest() {
             return false;
         }
 
@@ -82,6 +117,8 @@ public enum RoutesDefinition {
 
 
     public abstract boolean isSecure();
+
+    public abstract boolean isRest();
 
     public abstract HttpController controller() throws IllegalAccessException, InstantiationException;
 

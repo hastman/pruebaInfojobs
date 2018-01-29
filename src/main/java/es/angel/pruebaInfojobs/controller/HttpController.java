@@ -1,8 +1,8 @@
 package es.angel.pruebaInfojobs.controller;
 
 import es.angel.pruebaInfojobs.exception.MethodNotSupportedException;
-import es.angel.pruebaInfojobs.htlmview.ViewResolver;
 import es.angel.pruebaInfojobs.model.Response;
+import es.angel.pruebaInfojobs.viewresolver.ViewResolver;
 
 import java.util.Map;
 

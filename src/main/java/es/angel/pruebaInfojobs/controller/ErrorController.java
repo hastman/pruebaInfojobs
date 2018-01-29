@@ -1,8 +1,8 @@
 package es.angel.pruebaInfojobs.controller;
 
-import es.angel.pruebaInfojobs.htlmview.HtmlViewResolver;
-import es.angel.pruebaInfojobs.htlmview.RestViewResolver;
 import es.angel.pruebaInfojobs.model.Response;
+import es.angel.pruebaInfojobs.viewresolver.HtmlViewResolver;
+import es.angel.pruebaInfojobs.viewresolver.RestViewResolver;
 
 import java.util.Map;
 

@@ -17,14 +17,13 @@ public class ParamsHelper {
 
 
     public static Map<String, String> extractParams(HttpExchange httpExchange) {
-        final String searchUuidPath = extractFromPath(httpExchange.getRequestURI().getPath());
-        final Map<String, String> responseHeaders = extractFromHeaders(httpExchange.getRequestHeaders());
-        final Map<String, String> body = extractFromBody(new BufferedReader(new InputStreamReader(httpExchange.getRequestBody()))
-                .lines().collect(Collectors.joining("\n")));
+        final String body = new BufferedReader(new InputStreamReader(httpExchange.getRequestBody()))
+                .lines().collect(Collectors.joining("\n"));
         final Map<String, String> extracted = new HashMap<>();
-        extracted.put("PATH_QUERY", searchUuidPath);
-        extracted.putAll(responseHeaders);
-        extracted.putAll(body);
+        extracted.put("PATH_QUERY", extractFromPath(httpExchange.getRequestURI().getPath()));
+        extracted.putAll(extractFromHeaders(httpExchange.getRequestHeaders()));
+        extracted.putAll(extractFromBody(body));
+        extracted.putAll(extractJsonBody(body));
         return extracted;
     }
 
@@ -37,6 +36,11 @@ public class ParamsHelper {
             }
         });
         return bodyContent;
+    }
+
+    private static Map<String, String> extractJsonBody(String body) {
+        return Stream.of(body.replaceAll("[{}\\[\\]]", "").split(","))
+                .collect(Collectors.toMap(s -> s.split(":")[0], s -> s.split(":")[1]));
     }
 
     private static Map<String, String> extractFromHeaders(Headers responseHeaders) {
