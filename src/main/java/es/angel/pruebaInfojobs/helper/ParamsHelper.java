@@ -39,8 +39,11 @@ public class ParamsHelper {
     }
 
     private static Map<String, String> extractJsonBody(String body) {
-        return Stream.of(body.replaceAll("[{}\\[\\]]", "").split(","))
-                .collect(Collectors.toMap(s -> s.split(":")[0], s -> s.split(":")[1]));
+        if (body.matches("[{}\\[\\]]")) {
+            return Stream.of(body.replaceAll("[{}\\[\\]]", "").split(","))
+                    .collect(Collectors.toMap(s -> s.split(":")[0], s -> s.split(":")[1]));
+        }
+        return new HashMap<>();
     }
 
     private static Map<String, String> extractFromHeaders(Headers responseHeaders) {

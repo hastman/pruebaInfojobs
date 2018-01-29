@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 public class Users implements KeyModel {
 
@@ -35,10 +38,6 @@ public class Users implements KeyModel {
         return roles;
     }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
-
     public String getUserName() {
         return userName;
     }
@@ -51,16 +50,6 @@ public class Users implements KeyModel {
         return CryptoHelper.hashData(this.password);
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void addRole(String role) {
-        if (this.roles == null) {
-            this.roles = new ArrayList<>();
-        }
-        this.roles.add(role);
-    }
 
     public void save() {
         userDao.save(this);
@@ -68,6 +57,10 @@ public class Users implements KeyModel {
 
     public List<Users> readAll() {
         return userDao.readAll();
+    }
+
+    public void delete() {
+        userDao.delete(userName);
     }
 
     public static Users fromJson(Map<String, String> jsonUser) {
@@ -93,8 +86,18 @@ public class Users implements KeyModel {
     }
 
     @Override
+    public String toString() {
+        return "userName:" + userName + ":roles:" + roles.stream().collect(joining(","));
+    }
+
+    @Override
     public String getKey() {
         return userName;
+    }
+
+    public void update(String oldUserName) {
+        userDao.delete(oldUserName);
+        userDao.save(this);
     }
 
 

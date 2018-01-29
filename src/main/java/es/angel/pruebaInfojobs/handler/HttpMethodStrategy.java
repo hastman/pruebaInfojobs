@@ -43,7 +43,7 @@ public enum HttpMethodStrategy {
         @Override
         public Response response(HttpController httpController, Map<String, String> params) {
             try {
-                return httpController.doDelelete(params);
+                return httpController.doDelete(params);
             } catch (HttpStatusCodeException ex) {
                 return ex.errorResponse();
             }

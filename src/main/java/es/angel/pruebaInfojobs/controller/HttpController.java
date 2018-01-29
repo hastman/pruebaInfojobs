@@ -18,7 +18,7 @@ public abstract class HttpController {
         throw new MethodNotSupportedException();
     }
 
-    public Response doDelelete(final Map<String, String> parameters) {
+    public Response doDelete(final Map<String, String> parameters) {
         throw new MethodNotSupportedException();
     }
 
