@@ -14,39 +14,23 @@ public enum HttpMethodStrategy {
     GET {
         @Override
         public Response response(HttpController httpController, Map<String, String> params) {
-            try {
-                return httpController.doGet(params);
-            } catch (HttpStatusCodeException ex) {
-                return ex.errorResponse();
-            }
+            return httpController.doGet(params);
         }
     },
     POST {
         @Override
         public Response response(HttpController httpController, Map<String, String> params) {
-            try {
-                return httpController.doPost(params);
-            } catch (HttpStatusCodeException ex) {
-                return ex.errorResponse();
-            }
+            return httpController.doPost(params);
         }
     }, PUT {
         @Override
         public Response response(HttpController httpController, Map<String, String> params) {
-            try {
-                return httpController.doPut(params);
-            } catch (HttpStatusCodeException ex) {
-                return ex.errorResponse();
-            }
+            return httpController.doPut(params);
         }
     }, DELETE {
         @Override
         public Response response(HttpController httpController, Map<String, String> params) {
-            try {
-                return httpController.doDelete(params);
-            } catch (HttpStatusCodeException ex) {
-                return ex.errorResponse();
-            }
+            return httpController.doDelete(params);
         }
     };
 

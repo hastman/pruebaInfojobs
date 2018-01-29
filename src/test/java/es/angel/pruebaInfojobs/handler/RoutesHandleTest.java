@@ -22,6 +22,7 @@ public class RoutesHandleTest {
     public void when_route_not_exists_should_generate_not_found_response() throws IOException {
         when(httpExchange.getRequestURI()).thenReturn(URI.create("http://localhost/pathNotFound"));
         when(httpExchange.getRequestMethod()).thenReturn("GET");
+        when(httpExchange.getRequestHeaders()).thenReturn(headers());
         when(httpExchange.getResponseHeaders()).thenReturn(new Headers());
         when(httpExchange.getRequestBody()).thenReturn(new ByteArrayInputStream("test".getBytes()));
         when(httpExchange.getResponseBody()).thenReturn(new FakeOutputStream());
@@ -33,6 +34,7 @@ public class RoutesHandleTest {
     public void when_route_exists_but_method_is_not_supported_should_generate_method_not_supported_response() throws IOException {
         when(httpExchange.getRequestURI()).thenReturn(URI.create("http://localhost/page1"));
         when(httpExchange.getRequestMethod()).thenReturn("POST");
+        when(httpExchange.getRequestHeaders()).thenReturn(headers());
         when(httpExchange.getResponseHeaders()).thenReturn(new Headers());
         when(httpExchange.getRequestBody()).thenReturn(new ByteArrayInputStream("test".getBytes()));
         when(httpExchange.getResponseBody()).thenReturn(new FakeOutputStream());
@@ -44,6 +46,7 @@ public class RoutesHandleTest {
     public void when_rout_exists_and_method_is_correct_should_generate_ok_response() throws IOException {
         when(httpExchange.getRequestURI()).thenReturn(URI.create("http://localhost/page1"));
         when(httpExchange.getRequestMethod()).thenReturn("GET");
+        when(httpExchange.getRequestHeaders()).thenReturn(headers());
         when(httpExchange.getResponseHeaders()).thenReturn(new Headers());
         when(httpExchange.getRequestBody()).thenReturn(new ByteArrayInputStream("test".getBytes()));
         when(httpExchange.getResponseBody()).thenReturn(new FakeOutputStream());
@@ -56,11 +59,18 @@ public class RoutesHandleTest {
         when(httpExchange.getAttribute("SEC_EXCEPTION")).thenReturn(new UnAuthorizedException());
         when(httpExchange.getRequestURI()).thenReturn(URI.create("http://localhost/page1"));
         when(httpExchange.getRequestMethod()).thenReturn("GET");
+        when(httpExchange.getRequestHeaders()).thenReturn(headers());
         when(httpExchange.getResponseHeaders()).thenReturn(new Headers());
         when(httpExchange.getRequestBody()).thenReturn(new ByteArrayInputStream("test".getBytes()));
         when(httpExchange.getResponseBody()).thenReturn(new FakeOutputStream());
         routesHandle.handle(httpExchange);
         verify(httpExchange).sendResponseHeaders(401, 0);
+    }
+
+    private Headers headers(){
+        final Headers headers = new Headers();
+        headers.add("Accept","application/josn");
+        return headers;
     }
 
 

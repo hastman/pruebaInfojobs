@@ -13,7 +13,7 @@ public class Page1Controller extends HttpController {
 
     @Override
     public Response doGet(final Map<String, String> parameters) {
-        return performResponseWithTemplateMessage("templates/Page1.html", null);
+        return performResponseWithTemplateMessage("templates/Page1.html", new String[]{parameters.get("USER_IN_SESSION")});
 
     }
 

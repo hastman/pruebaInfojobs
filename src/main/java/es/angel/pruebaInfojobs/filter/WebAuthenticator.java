@@ -30,6 +30,7 @@ public class WebAuthenticator extends Authenticator {
         if (httpExchange.getAttribute("SEC_EXCEPTION") != null) {
             return new Failure(401);
         }
+        httpExchange.setAttribute("USER_IN_SESSION", session.getUserName());
         return new Success(new HttpPrincipal(session.getUserName(), "users"));
     }
 
@@ -63,7 +64,6 @@ public class WebAuthenticator extends Authenticator {
     private void checkSession(HttpExchange httpExchange, Session session) {
         if (session == null) {
             httpExchange.setAttribute("SEC_EXCEPTION", new UnAuthorizedException());
-
         }
     }
 }

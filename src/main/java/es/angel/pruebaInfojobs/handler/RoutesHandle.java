@@ -32,16 +32,18 @@ public class RoutesHandle implements HttpHandler {
         } catch (HttpStatusCodeException e) {
             System.err.println("Error when perform action " + e.getMessage());
             final Response errorResponse = e.errorResponse();
-            sendResponse(httpExchange, new Response.Builder()
-                    .withBody(errorResponse.getBodyContent())
-                    .withContentType(httpExchange.getResponseHeaders().getFirst("Content-Type"))
-                    .withStatusCode(errorResponse.getStatusCode())
-                    .build());
+            final Map<String, String> parameters = new HashMap<>();
+            parameters.put("ERROR", e.getMessage());
+            parameters.put("STATUS_CODE", String.valueOf(errorResponse.getStatusCode()));
+            parameters.put("Accept", httpExchange.getRequestHeaders().getFirst("Accept").split(",")[0]);
+            httpExchange.setAttribute("SEC_EXCEPTION", null);
+            sendResponse(httpExchange, new ErrorController().doGet(parameters));
         } catch (Exception e) {
-            e.printStackTrace();
             System.err.println("Error at instantiate controller " + e);
             final Map<String, String> parameters = new HashMap<>();
             parameters.put("ERROR", e.getMessage());
+            parameters.put("Accept", httpExchange.getRequestHeaders().getFirst("Accept").split(",")[0]);
+            httpExchange.setAttribute("SEC_EXCEPTION", null);
             sendResponse(httpExchange, new ErrorController().doGet(parameters));
         } finally {
             httpExchange.close();
@@ -59,7 +61,8 @@ public class RoutesHandle implements HttpHandler {
         final OutputStream responseStream = httpExchange.getResponseBody();
         final byte[] bodyBytes = response.getBodyContent().getBytes();
         httpExchange.sendResponseHeaders(response.getStatusCode(), 0);
-        httpExchange.getResponseHeaders().set("Content-Type", response.getContentType());
+        httpExchange.getResponseHeaders().set("Accept", response.getContentType());
+        httpExchange.getResponseHeaders().set("Content-type", response.getContentType());
         responseStream.write(bodyBytes);
         responseStream.flush();
     }

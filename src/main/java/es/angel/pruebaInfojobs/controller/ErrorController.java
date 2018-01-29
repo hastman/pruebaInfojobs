@@ -10,20 +10,21 @@ public class ErrorController extends HttpController {
 
     @Override
     public Response doGet(final Map<String, String> parameters) {
-        final String contentType = parameters.getOrDefault("Content-Type", "text/html");
+        final String acceptType = parameters.getOrDefault("Accept", "text/html");
         final String error = parameters.getOrDefault("ERROR", "Error code 500: Internal error");
+        final Integer statusCode = Integer.valueOf(parameters.getOrDefault("STATUS_CODE", "500"));
         String[] errorMessages = new String[]{error};
         String template = "templates/error.html";
         viewResolver = new HtmlViewResolver();
-        if (!contentType.equals("text/html")) {
-            template = contentType;
+        if (!acceptType.equals("text/html")) {
+            template = acceptType;
             viewResolver = new RestViewResolver();
             errorMessages = new String[]{"error", error};
         }
         final String body = viewResolver.resolveView(template, errorMessages);
         return new Response.Builder().withBody(body)
-                .withStatusCode(500)
-                .withContentType(contentType).build();
+                .withStatusCode(statusCode)
+                .withContentType(acceptType).build();
     }
 
 

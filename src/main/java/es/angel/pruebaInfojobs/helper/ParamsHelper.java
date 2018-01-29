@@ -21,6 +21,7 @@ public class ParamsHelper {
                 .lines().collect(Collectors.joining("\n"));
         final Map<String, String> extracted = new HashMap<>();
         extracted.put("PATH_QUERY", extractFromPath(httpExchange.getRequestURI().getPath()));
+        extracted.put("USER_IN_SESSION", String.valueOf(httpExchange.getAttribute("USER_IN_SESSION")));
         extracted.putAll(extractFromHeaders(httpExchange.getRequestHeaders()));
         extracted.putAll(extractFromBody(body));
         extracted.putAll(extractJsonBody(body));

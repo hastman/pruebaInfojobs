@@ -27,7 +27,7 @@ public class RestAuthenticator extends BasicAuthenticator {
             httpExchange.setAttribute("SEC_EXCEPTION", new UnAuthorizedException());
             return authenticate;
         }
-
+        httpExchange.setAttribute("USER_IN_SESSION", userInDB.getUserName());
         return canAccess(httpExchange);
     }
 
