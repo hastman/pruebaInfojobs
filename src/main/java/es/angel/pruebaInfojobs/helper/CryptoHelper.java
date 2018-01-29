@@ -5,20 +5,17 @@ import es.angel.pruebaInfojobs.exception.InternalError;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.UUID;
+import java.util.Optional;
 
-public class SecurityHelper {
+public class CryptoHelper {
 
     public static String hashData(String data) {
         try {
-            return Arrays.toString(MessageDigest.getInstance("MD5").digest(data.getBytes()));
+            return Arrays.toString(MessageDigest.getInstance("MD5")
+                    .digest(Optional.ofNullable(data).orElse("").getBytes()));
         } catch (NoSuchAlgorithmException e) {
             System.err.println("Error creating Hash password " + e.toString());
             throw new InternalError();
         }
-    }
-
-    public static String uuidForSession() {
-        return UUID.randomUUID().toString();
     }
 }

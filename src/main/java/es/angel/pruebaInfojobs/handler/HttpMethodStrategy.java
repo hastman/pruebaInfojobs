@@ -12,11 +12,11 @@ public class HttpMethodStrategy {
 
     private Map<String, Response> methodAndResponseMap = new HashMap<>();
 
-    public HttpMethodStrategy(HttpController httpController) {
-        this.methodAndResponseMap.put("GET", this.get(httpController));
-        this.methodAndResponseMap.put("POST", this.post(httpController));
-        this.methodAndResponseMap.put("PUT", this.put(httpController));
-        this.methodAndResponseMap.put("DELETE", this.delete(httpController));
+    HttpMethodStrategy(HttpController httpController, Map<String, String> parms) {
+        this.methodAndResponseMap.put("GET", this.get(httpController, parms));
+        this.methodAndResponseMap.put("POST", this.post(httpController, parms));
+        this.methodAndResponseMap.put("PUT", this.put(httpController, parms));
+        this.methodAndResponseMap.put("DELETE", this.delete(httpController, parms));
     }
 
     public Response responseForMethod(String method) {
@@ -26,33 +26,33 @@ public class HttpMethodStrategy {
         return methodAndResponseMap.get(method);
     }
 
-    private Response post(HttpController httpController) {
+    private Response post(HttpController httpController, Map<String, String> parms) {
         try {
-            return httpController.doPost(null);
+            return httpController.doPost(parms);
         } catch (HttpStatusCodeException ex) {
             return ex.errorResponse();
         }
     }
 
-    private Response put(HttpController httpController) {
+    private Response put(HttpController httpController, Map<String, String> parms) {
         try {
-            return httpController.doPut(null);
+            return httpController.doPut(parms);
         } catch (HttpStatusCodeException ex) {
             return ex.errorResponse();
         }
     }
 
-    private Response delete(HttpController httpController) {
+    private Response delete(HttpController httpController, Map<String, String> parms) {
         try {
-            return httpController.doDelelete(null);
+            return httpController.doDelelete(parms);
         } catch (HttpStatusCodeException ex) {
             return ex.errorResponse();
         }
     }
 
-    private Response get(HttpController httpController) {
+    private Response get(HttpController httpController, Map<String, String> parms) {
         try {
-            return httpController.doGet(null);
+            return httpController.doGet(parms);
         } catch (HttpStatusCodeException ex) {
             return ex.errorResponse();
         }

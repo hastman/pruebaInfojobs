@@ -2,8 +2,7 @@ package es.angel.pruebaInfojobs.model;
 
 import es.angel.pruebaInfojobs.dao.BaseDao;
 import es.angel.pruebaInfojobs.dao.UserDao;
-import es.angel.pruebaInfojobs.exception.NotFoundException;
-import es.angel.pruebaInfojobs.helper.SecurityHelper;
+import es.angel.pruebaInfojobs.helper.CryptoHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ public class Users implements KeyModel {
 
     private String password;
 
-    private BaseDao<Users,String> userDao;
+    private BaseDao<Users, String> userDao;
 
     public Users() {
         this.userDao = new UserDao();
@@ -46,7 +45,7 @@ public class Users implements KeyModel {
     }
 
     public String getPassword() {
-        return SecurityHelper.hashData(this.password);
+        return CryptoHelper.hashData(this.password);
     }
 
     public void setPassword(String password) {
@@ -68,8 +67,13 @@ public class Users implements KeyModel {
         return userDao.readAll();
     }
 
-    public Users findByUserName(String userName){
-        return userDao.findOne(userName).orElseThrow(NotFoundException::new);
+    public Boolean isUser(){
+        final Users userInBD = userDao.findOne(userName).orElseGet(Users::new);
+        return userInBD.getPassword().equals(this.getPassword());
+    }
+
+    public Users findByUserName() {
+        return userDao.findOne(userName).orElseGet(Users::new);
     }
 
     @Override
